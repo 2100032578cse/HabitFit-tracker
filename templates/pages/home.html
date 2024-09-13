@@ -1,0 +1,149 @@
+{% extends 'components/base.html' %}
+{% load static %}
+
+{% block title %}Home - HabitFit Tracker{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div id="heroCarousel" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#heroCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#heroCarousel" data-slide-to="1"></li>
+            <li data-target="#heroCarousel" data-slide-to="2"></li>
+            <li data-target="#heroCarousel" data-slide-to="3"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="hero-overlay"></div>
+                <img src="{% static 'images/hero_images.png' %}" class="d-block w-100" alt="First slide">
+                <div class="carousel-caption">
+                    <h1>Welcome to HabitFit</h1>
+                    <p>Empowering Your Fitness Journey</p>
+                    <a href="#" class="btn btn-primary btn-lg">Get Started</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-overlay"></div>
+                <img src="{% static 'images/hero_images_1.png' %}" class="d-block w-100" alt="Second slide">
+                <div class="carousel-caption">
+                    <h3>Track Your Progress</h3>
+                    <p>Stay Motivated and Focused</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-overlay"></div>
+                <img src="{% static 'images/hero_images_2.png' %}" class="d-block w-100" alt="Third slide">
+                <div class="carousel-caption">
+                    <h1>Achieve Your Goals</h1>
+                    <p>With Personalized Fitness Plans</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="hero-overlay"></div>
+                <img src="{% static 'images/hero_images_3.png' %}" class="d-block w-100" alt="Fourth slide">
+                <div class="carousel-caption">
+                    <h3>Join Our Community</h3>
+                    <p>Get Support from Like-Minded People</p>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose HabitFit?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-chart-line fa-3x mb-3 text-primary"></i>
+                        <h3 class="card-title">Track Progress</h3>
+                        <p class="card-text">Monitor your fitness journey with easy-to-use tracking tools.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-users fa-3x mb-3 text-primary"></i>
+                        <h3 class="card-title">Community Support</h3>
+                        <p class="card-text">Join a community of like-minded individuals for motivation and support.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-trophy fa-3x mb-3 text-primary"></i>
+                        <h3 class="card-title">Achieve Goals</h3>
+                        <p class="card-text">Set personalized goals and celebrate your achievements.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section class="cta-section py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Start Your Fitness Journey?</h2>
+        <p class="mb-4">Join HabitFit today and take the first step towards a healthier you!</p>
+        <a href="#" class="btn btn-light btn-lg">Sign Up Now</a>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">What Our Users Say</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">"HabitFit has completely transformed my fitness routine. I've never felt better!"</p>
+                        <footer class="blockquote-footer">Sarah J.</footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">"The community support is amazing. I've made great friends and achieved my goals."</p>
+                        <footer class="blockquote-footer">Mike T.</footer>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <p class="card-text">"Easy to use and incredibly motivating. HabitFit is now an essential part of my day."</p>
+                        <footer class="blockquote-footer">Emma L.</footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add any additional JavaScript for the home page here
+</script>
+{% endblock %}
