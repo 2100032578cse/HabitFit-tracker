@@ -13,28 +13,47 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#"><i class="fas fa-dumbbell mr-2"></i>HabitFit</a>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home_page' %}"><i class="fas fa-dumbbell mr-2"></i>HabitFit</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-home mr-1"></i>Home</a>
+                        <a class="nav-link" href="{% url 'home_page' %}"><i class="fas fa-home mr-1"></i>Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="fas fa-user mr-1"></i>Profile</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="fas fa-info-circle mr-1"></i>About</a>
                     </li>
+                    {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link btn btn-outline-light" href="#"><i class="fas fa-sign-in-alt mr-1"></i>Login</a>
+                        <a class="nav-link" href="{% url 'profile_update' %}"><i class="fas fa-user mr-1"></i>Profile</a>
                     </li>
+
+                    <li class="nav-item">
+                        <!-- Logout button triggers the hidden form submission -->
+                        <a class="nav-link btn btn-outline-danger mx-2" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            Logout
+                        </a>
+                    </li>
+
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light" href="{% url 'login' %}"><i class="fas fa-sign-in-alt mr-1"></i>Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light" href="{% url 'signup' %}"><i class="fas fa-user-plus mr-1"></i>Signup</a>
+                    </li>
+                    {% endif%}
                 </ul>
             </div>
         </div>
+        <!-- Log out form (hidden) -->
+        <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+            {% csrf_token %}
+        </form>
     </nav>
 
     <!-- Main content area -->
