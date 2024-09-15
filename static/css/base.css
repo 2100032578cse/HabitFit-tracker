@@ -1,0 +1,109 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    padding-top: 56px;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.hero-section {
+    position: relative;
+}
+
+.carousel-item {
+    height: 100vh;
+    min-height: 350px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel-caption {
+    bottom: 30%;
+    z-index: 10;
+}
+
+.carousel-caption h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.carousel-caption p {
+    font-size: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Features Section Styles */
+.features-section .card {
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.features-section .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.features-section .card-body {
+    padding: 2rem;
+}
+
+/* Call to Action Section Styles */
+.cta-section {
+    background: linear-gradient(45deg, #007bff, #00aaff);
+}
+
+/* Testimonials Section Styles */
+.testimonials-section .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.testimonials-section .card-body {
+    position: relative;
+    padding: 2rem;
+}
+
+.testimonials-section .card-body:before {
+    content: "\201C";
+    font-size: 5rem;
+    position: absolute;
+    top: -20px;
+    left: 10px;
+    color: #007bff;
+    opacity: 0.3;
+}
+
+/* Footer Styles */
+.footer {
+    background-color: #343a40;
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    color: #007bff;
+}
+
+@media (max-width: 768px) {
+    .carousel-caption h1 {
+        font-size: 2.5rem;
+    }
+    .carousel-caption p {
+        font-size: 1.2rem;
+    }
+}
