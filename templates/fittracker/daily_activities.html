@@ -1,0 +1,78 @@
+{% extends 'fittracker/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Daily Activities</h1>
+</div>
+
+<section id="daily-activities">
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Set Daily Goals</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="exercise" class="form-label">Exercise (minutes)</label>
+                            <input type="number" class="form-control" id="exercise" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="water" class="form-label">Water (glasses)</label>
+                            <input type="number" class="form-control" id="water" min="0">
+                        </div>
+                        <div class="mb-3">
+                            <label for="sleep" class="form-label">Sleep (hours)</label>
+                            <input type="number" class="form-control" id="sleep" min="0" max="24">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Set Goals</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Track Activities</h5>
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Walking
+                            <button class="btn btn-sm btn-outline-primary">Start</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Running
+                            <button class="btn btn-sm btn-outline-primary">Start</button>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Sleeping
+                            <button class="btn btn-sm btn-outline-primary">Start</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    // Activity Tracking
+    document.querySelectorAll('#daily-activities .btn-outline-primary').forEach(button => {
+        button.addEventListener('click', function() {
+            const activity = this.parentElement.textContent.trim().split('\n')[0];
+            if (this.textContent === 'Start') {
+                this.textContent = 'Stop';
+                this.classList.replace('btn-outline-primary', 'btn-outline-danger');
+                console.log(`Started tracking: ${activity}`);
+                // Here you would typically start a timer or make an API call to start tracking
+            } else {
+                this.textContent = 'Start';
+                this.classList.replace('btn-outline-danger', 'btn-outline-primary');
+                console.log(`Stopped tracking: ${activity}`);
+                // Here you would typically stop the timer or make an API call to stop tracking
+            }
+        });
+    });
+</script>
+{% endblock %}
