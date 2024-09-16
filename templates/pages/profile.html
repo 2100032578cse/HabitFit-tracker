@@ -1,0 +1,71 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<style>
+<!--css/-->
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        <!--  profile-->
+          <section id="profile" class="mt-5">
+                <h2>Profile</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Personal Details</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" value="{{ user.name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="{{ user.email }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" value="{{ user.age }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="weight" class="form-label">Weight (kg)</label>
+                                <input type="number" class="form-control" id="weight" value="{{ user.weight }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="height" class="form-label">Height (cm)</label>
+                                <input type="number" class="form-control" id="height" value="{{ user.height }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="goals" class="form-label">Fitness Goals</label>
+                                <textarea class="form-control" id="goals" rows="3">{{ user.fitness_goals }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+     // Profile Update
+    document.querySelector('#profile form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+        console.log('Profile update:', data);
+        // Here you would typically make an API call to update the profile
+        alert('Profile updated successfully!');
+    });
+
+
+</script>
+{% endblock %}

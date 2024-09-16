@@ -1,0 +1,94 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<style>
+<!--css/-->
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+           <!-- Mood Tracker Section -->
+            <section id="mood-tracker" class="mt-5">
+                <h2>Mood and Mental Health</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Log Your Mood</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="mood" class="form-label">How are you feeling today?</label>
+                                        <select class="form-select" id="mood">
+                                            <option value="1">😢 Sad</option>
+                                            <option value="2">😐 Neutral</option>
+                                            <option value="3">🙂 Happy</option>
+                                            <option value="4">😄 Excited</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="stress" class="form-label">Stress Level (1-10)</label>
+                                        <input type="range" class="form-range" id="stress" min="1" max="10">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Log Mood</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Mindfulness Recommendation</h5>
+                                <p>Based on your stress level, try this exercise:</p>
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Deep Breathing:</strong> Take 5 deep breaths, inhaling for 4 seconds and exhaling for 6 seconds.
+                                </div>
+                                <button class="btn btn-outline-primary">More Exercises</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+      // Mood Logging
+    document.querySelector('#mood-tracker form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const mood = document.querySelector('#mood').value;
+        const stress = document.querySelector('#stress').value;
+        console.log(`Mood logged: ${mood}, Stress level: ${stress}`);
+        // Here you would typically make an API call to save the mood data
+        alert('Mood logged successfully!');
+    });
+
+
+    // Notifications
+    function showNotification(message) {
+        if ("Notification" in window) {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("HabitFittracker", { body: message });
+                }
+            });
+        }
+    }
+
+    // Simulating a notification after 5 seconds
+    setTimeout(() => {
+        showNotification("Don't forget to drink water!");
+    }, 5000);
+
+
+
+
+</script>
+{% endblock %}

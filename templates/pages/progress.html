@@ -1,0 +1,110 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<style>
+<!--css/-->
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+           <!-- Progress Section -->
+            <section id="progress" class="mt-5">
+                <h2>Progress and Analytics</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Exercise Progress</h5>
+                                <canvas id="exerciseChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Sleep Tracking</h5>
+                                <canvas id="sleepChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Sleep Tracking Chart
+    var sleepCtx = document.getElementById('sleepChart').getContext('2d');
+    var sleepChart = new Chart(sleepCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Hours Slept',
+                data: [7, 6.5, 8, 7.5, 6, 9, 8.5],
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgb(153, 102, 255)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 12
+                }
+            }
+        }
+    });
+
+     // Exercise Progress Chart
+    var exerciseCtx = document.getElementById('exerciseChart').getContext('2d');
+    var exerciseChart = new Chart(exerciseCtx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Minutes Exercised',
+                data: [30, 45, 60, 30, 45, 60, 90],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+    // Notifications
+    function showNotification(message) {
+        if ("Notification" in window) {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("HabitFittracker", { body: message });
+                }
+            });
+        }
+    }
+
+    // Simulating a notification after 5 seconds
+    setTimeout(() => {
+        showNotification("Don't forget to drink water!");
+    }, 5000);
+
+
+
+
+</script>
+{% endblock %}
