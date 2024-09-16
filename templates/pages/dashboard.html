@@ -1,0 +1,518 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<style>
+    #sidebar {
+        min-height: 100vh;
+        box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(to bottom, #4e54c8, #8f94fb);
+        color: #fff;
+        transition: all 0.3s;
+    }
+
+    #sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        margin: 5px 15px;
+        transition: all 0.3s;
+    }
+
+    #sidebar .nav-link:hover,
+    #sidebar .nav-link.active {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    #sidebar .nav-link i {
+        margin-right: 10px;
+    }
+
+    #sidebar .user-profile {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #sidebar .user-profile img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+
+    #sidebar .progress {
+        height: 8px;
+        margin-top: 10px;
+    }
+
+    #sidebar .sidebar-heading {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 10px 15px 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <!-- Enhanced Sidebar -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+            <div class="position-sticky">
+                <div class="user-profile mb-4">
+                    <img src="{% static 'images/user-avatar.png' %}" alt="User Avatar" class="mb-2">
+                    <h5 class="mb-0">{{ user.first_name }}</h5>
+                    <p class="text-light mb-2">{{ user.email }}</p>
+                    <div class="progress">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">Level 7</div>
+                    </div>
+                </div>
+
+                <h6 class="sidebar-heading">Main Menu</h6>
+                <ul class="nav flex-column mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#overview">
+                            <i class="bi bi-house-door"></i> Overview
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#daily-activities">
+                            <i class="bi bi-list-check"></i> Daily Activities
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#progress">
+                            <i class="bi bi-graph-up"></i> Progress
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#mood-tracker">
+                            <i class="bi bi-emoji-smile"></i> Mood Tracker
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading">Community</h6>
+                <ul class="nav flex-column mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#community">
+                            <i class="bi bi-people"></i> Challenges
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#leaderboard">
+                            <i class="bi bi-trophy"></i> Leaderboard
+                        </a>
+                    </li>
+                </ul>
+
+                <h6 class="sidebar-heading">Account</h6>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#profile">
+                            <i class="bi bi-person"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#settings">
+                            <i class="bi bi-gear"></i> Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout' %}">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="mt-4 px-3">
+                    <div class="card bg-info text-white">
+                        <div class="card-body">
+                            <h6 class="card-title">Daily Tip</h6>
+                            <p class="card-text small">Stay hydrated! Aim to drink at least 8 glasses of water today.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">Dashboard</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <div class="btn-group me-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Overview Section -->
+            <section id="overview">
+                <h2>Overview</h2>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Today's Progress</h5>
+                                <p class="card-text">You've completed 3 out of 5 goals today!</p>
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Weekly Streak</h5>
+                                <p class="card-text">You're on a 5-day streak! Keep it up!</p>
+                                <i class="bi bi-fire text-warning" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Next Reminder</h5>
+                                <p class="card-text">Drink water in 30 minutes</p>
+                                <i class="bi bi-bell text-info" style="font-size: 2rem;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily Activities Section -->
+            <section id="daily-activities" class="mt-5">
+                <h2>Daily Activities</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Set Daily Goals</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="exercise" class="form-label">Exercise (minutes)</label>
+                                        <input type="number" class="form-control" id="exercise" min="0">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="water" class="form-label">Water (glasses)</label>
+                                        <input type="number" class="form-control" id="water" min="0">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="sleep" class="form-label">Sleep (hours)</label>
+                                        <input type="number" class="form-control" id="sleep" min="0" max="24">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Set Goals</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Track Activities</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Walking
+                                        <button class="btn btn-sm btn-outline-primary">Start</button>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Running
+                                        <button class="btn btn-sm btn-outline-primary">Start</button>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Sleeping
+                                        <button class="btn btn-sm btn-outline-primary">Start</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Section -->
+            <section id="progress" class="mt-5">
+                <h2>Progress and Analytics</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Exercise Progress</h5>
+                                <canvas id="exerciseChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Sleep Tracking</h5>
+                                <canvas id="sleepChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mood Tracker Section -->
+            <section id="mood-tracker" class="mt-5">
+                <h2>Mood and Mental Health</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Log Your Mood</h5>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="mood" class="form-label">How are you feeling today?</label>
+                                        <select class="form-select" id="mood">
+                                            <option value="1">😢 Sad</option>
+                                            <option value="2">😐 Neutral</option>
+                                            <option value="3">🙂 Happy</option>
+                                            <option value="4">😄 Excited</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="stress" class="form-label">Stress Level (1-10)</label>
+                                        <input type="range" class="form-range" id="stress" min="1" max="10">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Log Mood</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Mindfulness Recommendation</h5>
+                                <p>Based on your stress level, try this exercise:</p>
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Deep Breathing:</strong> Take 5 deep breaths, inhaling for 4 seconds and exhaling for 6 seconds.
+                                </div>
+                                <button class="btn btn-outline-primary">More Exercises</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Community Section -->
+            <section id="community" class="mt-5">
+                <h2>Community and Challenges</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Active Challenges</h5>
+                                <ul class="list-group">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        30-Day Fitness Challenge
+                                        <span class="badge bg-primary rounded-pill">15 days left</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        Water Drinking Contest
+                                        <span class="badge bg-primary rounded-pill">5 days left</span>
+                                    </li>
+                                </ul>
+                                <button class="btn btn-outline-primary mt-3">Join New Challenge</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Community Feed</h5>
+                                <div class="mb-3">
+                                    <strong>John D.</strong> completed the 30-Day Fitness Challenge!
+                                    <small class="text-muted">2 hours ago</small>
+                                </div>
+                                <div class="mb-3">
+                                    <strong>Sarah M.</strong> is on a 7-day streak for meditation.
+                                    <small class="text-muted">5 hours ago</small>
+                                </div>
+                                <button class="btn btn-outline-primary">Post Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Profile Section -->
+            <section id="profile" class="mt-5">
+                <h2>Profile</h2>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Personal Details</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" value="{{ user.name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" value="{{ user.email }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" value="{{ user.age }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="weight" class="form-label">Weight (kg)</label>
+                                <input type="number" class="form-control" id="weight" value="{{ user.weight }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="height" class="form-label">Height (cm)</label>
+                                <input type="number" class="form-control" id="height" value="{{ user.height }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="goals" class="form-label">Fitness Goals</label>
+                                <textarea class="form-control" id="goals" rows="3">{{ user.fitness_goals }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Exercise Progress Chart
+    var exerciseCtx = document.getElementById('exerciseChart').getContext('2d');
+    var exerciseChart = new Chart(exerciseCtx, {
+        type: 'line',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Minutes Exercised',
+                data: [30, 45, 60, 30, 45, 60, 90],
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    // Sleep Tracking Chart
+    var sleepCtx = document.getElementById('sleepChart').getContext('2d');
+    var sleepChart = new Chart(sleepCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            datasets: [{
+                label: 'Hours Slept',
+                data: [7, 6.5, 8, 7.5, 6, 9, 8.5],
+                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                borderColor: 'rgb(153, 102, 255)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 12
+                }
+            }
+        }
+    });
+
+    // Activity Tracking
+    document.querySelectorAll('#daily-activities .btn-outline-primary').forEach(button => {
+        button.addEventListener('click', function() {
+            const activity = this.parentElement.textContent.trim().split('\n')[0];
+            if (this.textContent === 'Start') {
+                this.textContent = 'Stop';
+                this.classList.replace('btn-outline-primary', 'btn-outline-danger');
+                console.log(`Started tracking: ${activity}`);
+                // Here you would typically start a timer or make an API call to start tracking
+            } else {
+                this.textContent = 'Start';
+                this.classList.replace('btn-outline-danger', 'btn-outline-primary');
+                console.log(`Stopped tracking: ${activity}`);
+                // Here you would typically stop the timer or make an API call to stop tracking
+            }
+        });
+    });
+
+    // Mood Logging
+    document.querySelector('#mood-tracker form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const mood = document.querySelector('#mood').value;
+        const stress = document.querySelector('#stress').value;
+        console.log(`Mood logged: ${mood}, Stress level: ${stress}`);
+        // Here you would typically make an API call to save the mood data
+        alert('Mood logged successfully!');
+    });
+
+    // Profile Update
+    document.querySelector('#profile form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+        console.log('Profile update:', data);
+        // Here you would typically make an API call to update the profile
+        alert('Profile updated successfully!');
+    });
+
+    // Notifications
+    function showNotification(message) {
+        if ("Notification" in window) {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("HabitFittracker", { body: message });
+                }
+            });
+        }
+    }
+
+    // Simulating a notification after 5 seconds
+    setTimeout(() => {
+        showNotification("Don't forget to drink water!");
+    }, 5000);
+
+    // Community Challenge Join
+    document.querySelector('#community .btn-outline-primary').addEventListener('click', function() {
+        const challengeName = prompt("Enter the name of the challenge you want to join:");
+        if (challengeName) {
+            console.log(`Joined challenge: ${challengeName}`);
+            // Here you would typically make an API call to join the challenge
+            alert(`You've successfully joined the ${challengeName} challenge!`);
+        }
+    });
+
+    // Community Post Update
+    document.querySelector('#community .card:last-child .btn-outline-primary').addEventListener('click', function() {
+        const update = prompt("What's your latest achievement?");
+        if (update) {
+            console.log(`Posted update: ${update}`);
+            // Here you would typically make an API call to post the update
+            const feed = this.parentElement;
+            const newUpdate = document.createElement('div');
+            newUpdate.className = 'mb-3';
+            newUpdate.innerHTML = `<strong>You</strong> ${update}<br><small class="text-muted">Just now</small>`;
+            feed.insertBefore(newUpdate, this);
+        }
+    });
+</script>
+{% endblock %}
