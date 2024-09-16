@@ -1,0 +1,167 @@
+{% extends 'components/base.html' %}
+
+{% load static %}
+{% block extra_css %}
+<style>
+    body, html {
+        height: 100%;
+        overflow: hidden;
+    }
+    .dashboard-container {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+    #sidebar {
+        flex: 0 0 250px;
+        height: 100vh;
+        overflow-y: auto;
+        position: sticky;
+        top: 0;
+        background: linear-gradient(to bottom, #4e54c8, #8f94fb);
+        color: #fff;
+        padding-top: 20px;
+    }
+    #main-content {
+        flex: 1;
+        height: 100vh;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    #sidebar .nav-link {
+        color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        margin: 5px 15px;
+        transition: all 0.3s;
+    }
+    #sidebar .nav-link:hover,
+    #sidebar .nav-link.active {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    #sidebar .nav-link i {
+        margin-right: 10px;
+    }
+    #sidebar .user-profile {
+        text-align: center;
+        padding: 20px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #sidebar .user-profile img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        border: 3px solid rgba(255, 255, 255, 0.2);
+    }
+    #sidebar .progress {
+        height: 8px;
+        margin-top: 10px;
+    }
+    #sidebar .sidebar-heading {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 10px 15px 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="user-profile mb-4">
+            <img src="{% static 'images/user-avatar.png' %}" alt="User Avatar" class="mb-2">
+            <h5 class="mb-0">{{ user.first_name }}</h5>
+            <p class="text-light mb-2">{{ user.email }}</p>
+            <div class="progress">
+                <div class="progress-bar bg-success" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">Level 7</div>
+            </div>
+        </div>
+
+        <h6 class="sidebar-heading">Main Menu</h6>
+        <ul class="nav flex-column mb-4">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+                    <i class="bi bi-house-door"></i> Overview
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'daily_activities' %}active{% endif %}" href="{% url 'daily_activities' %}">
+                    <i class="bi bi-list-check"></i> Daily Activities
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'progress' %}active{% endif %}" href="{% url 'progress' %}">
+                    <i class="bi bi-graph-up"></i> Progress
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'mood_tracker' %}active{% endif %}" href="{% url 'mood_tracker' %}">
+                    <i class="bi bi-emoji-smile"></i> Mood Tracker
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading">Community</h6>
+        <ul class="nav flex-column mb-4">
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'community-challenge' %}active{% endif %}" href="{% url 'community-challenge' %}">
+                    <i class="bi bi-people"></i> Challenges
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.resolver_match.url_name == 'leaderboard' %}active{% endif %}" href="{% url 'challenge-leaderboard' %}">
+                    <i class="bi bi-trophy"></i> Leaderboard
+                </a>
+            </li>
+        </ul>
+
+        <h6 class="sidebar-heading">Account</h6>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="#settings">
+                    <i class="bi bi-gear"></i> Settings
+                </a>
+            </li>
+        </ul>
+
+        <div class="mt-4 px-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Daily Tip</h6>
+                    <p class="card-text small">Stay hydrated! Aim to drink at least 8 glasses of water today.</p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main id="main-content">
+        {% block dashboard_content %}
+        {% endblock %}
+    </main>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Notifications
+    function showNotification(message) {
+        if ("Notification" in window) {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    new Notification("HabitFittracker", { body: message });
+                }
+            });
+        }
+    }
+
+    // Simulating a notification after 5 seconds
+    setTimeout(() => {
+        showNotification("Don't forget to drink water!");
+    }, 5000);
+</script>
+{% endblock %}
