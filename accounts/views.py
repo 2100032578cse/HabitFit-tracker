@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
+from .models import CustomUser, UserProfile
 
 
 class SignUpView(CreateView):
@@ -10,6 +11,17 @@ class SignUpView(CreateView):
     form_class = CustomUserCreationForm
     template_name = "registration/signup.html"
     success_url = reverse_lazy("login")
+
+
+class ProfilePageDetailView(LoginRequiredMixin, DetailView):
+    model = UserProfile
+    template_name = "pages/profile.html"
+    context_object_name = "user_profile"
+
+    def get_object(self):
+        # Ensure the user has a profile, create if not
+        profile, created = UserProfile.objects.get_or_create(user=self.request.user)
+        return profile
 
 
 class ProfileUpdateView(UpdateView):
