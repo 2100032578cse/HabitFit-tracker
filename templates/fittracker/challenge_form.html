@@ -1,0 +1,20 @@
+{% extends 'fittracker/base_dashboard.html' %}
+
+{% block dashboard_content %}
+<div class="container">
+    <h2 class="mb-4">Create New Challenge</h2>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Create Challenge</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

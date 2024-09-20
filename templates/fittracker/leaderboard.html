@@ -2,88 +2,42 @@
 {% load static %}
 
 {% block dashboard_content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Leaderboard</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                This Week
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">This Week</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">All Time</a></li>
-            </ul>
+<div class="container">
+    <h2 class="mb-4">Community Leaderboard</h2>
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Rank</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Points</th>
+                        <th scope="col">Achievements</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in leaderboard %}
+                    <tr {% if user == request.user %}class="table-primary"{% endif %}>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>
+                            <img src="{% static 'images/avatar.png' %}" alt="{{ user.username }}" class="rounded-circle mr-2" width="30">
+                            {{ user.username }}
+                        </td>
+                        <td>{{ user.points }}</td>
+                        <td>
+                            {% for achievement in user.achievements %}
+                            <span class="badge badge-pill badge-success">{{ achievement }}</span>
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No data available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Top Performers</h5>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th scope="col">Rank</th>
-                            <th scope="col">User</th>
-                            <th scope="col">Points</th>
-                            <th scope="col">Streak</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in "12345"|make_list %}
-                        <tr>
-                            <th scope="row">{{ forloop.counter }}</th>
-                            <td>
-                                <img src="{% static 'images/user-avatar.png' %}" alt="User Avatar" class="rounded-circle me-2" style="width: 30px; height: 30px;">
-                                User {{ forloop.counter }}
-                            </td>
-                            <td>{{ forloop.counter|add:"1000" }}</td>
-                            <td>{{ forloop.counter|add:"5" }} days</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Your Ranking</h5>
-                <p class="display-4 text-center">15th</p>
-                <p class="text-muted text-center">Out of 100 participants</p>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Your Stats</h5>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Points
-                        <span class="badge bg-primary rounded-pill">950</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Current Streak
-                        <span class="badge bg-success rounded-pill">4 days</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        Completed Challenges
-                        <span class="badge bg-info rounded-pill">3</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-{{ block.super }}
-<script>
-    // You can add any leaderboard-specific JavaScript here
-    console.log('Leaderboard page loaded');
-</script>
 {% endblock %}

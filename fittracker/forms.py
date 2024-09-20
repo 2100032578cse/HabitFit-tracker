@@ -5,7 +5,7 @@ from .models import Activity, Goal, Mood, Challenge
 class ActivityForm(forms.ModelForm):
     class Meta:
         model = Activity
-        fields = ["activity_type", "duration", "date", "notes"]
+        fields = ["activity_type", "duration", "date"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
         }
@@ -23,7 +23,7 @@ class GoalForm(forms.ModelForm):
 class MoodForm(forms.ModelForm):
     class Meta:
         model = Mood
-        fields = ["mood", "date", "notes"]
+        fields = ["mood", "date", "recommendation"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
         }
