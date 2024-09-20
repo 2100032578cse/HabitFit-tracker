@@ -1,71 +1,100 @@
 {% extends 'components/base.html' %}
-
 {% load static %}
-{% block extra_css %}
-<style>
-<!--css/-->
-</style>
-{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container py-5">
     <div class="row">
-
-        <!--  profile-->
-          <section id="profile" class="mt-5">
-                <h2>Profile</h2>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Personal Details</h5>
-                        <form>
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" value="{{ user.name }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" value="{{ user.email }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="age" class="form-label">Age</label>
-                                <input type="number" class="form-control" id="age" value="{{ user.age }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="weight" class="form-label">Weight (kg)</label>
-                                <input type="number" class="form-control" id="weight" value="{{ user.weight }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="height" class="form-label">Height (cm)</label>
-                                <input type="number" class="form-control" id="height" value="{{ user.height }}">
-                            </div>
-                            <div class="mb-3">
-                                <label for="goals" class="form-label">Fitness Goals</label>
-                                <textarea class="form-control" id="goals" rows="3">{{ user.fitness_goals }}</textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Update Profile</button>
-                        </form>
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow">
+                <div class="card-body text-center">
+                    {% if user_profile.user.profile_picture %}
+                    <img src="{{ user_profile.user.profile_picture.url }}" alt="avatar"
+                         class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% else %}
+                    <img src="{% static 'images/user-avatar.png' %}" alt="User Avatar"
+                         class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                    {% endif %}
+                    <h5 class="mb-1">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h5>
+                    <p class="text-muted mb-1">{{ user_profile.location }}</p>
+                    <p class="text-muted mb-4">{{ user_profile.bio }}</p>
+                    <div class="d-flex justify-content-center mb-2">
+                        <a href="{% url 'profile_update' %}" class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-user-edit mr-2"></i>Edit Profile
+                        </a>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Profile Information</h5>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 font-weight-bold">Full Name</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user_profile.user.first_name }} {{ user_profile.user.middle_name|default:"" }} {{ user_profile.user.last_name }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 font-weight-bold">Email</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user_profile.user.email }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 font-weight-bold">Date of Birth</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user_profile.user.date_of_birth }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 font-weight-bold">Location</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user_profile.location }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-sm-3">
+                            <p class="mb-0 font-weight-bold">Fitness Goals</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ user_profile.user.fitness_goals }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}
 
-{% block extra_js %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-
-     // Profile Update
-    document.querySelector('#profile form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const formData = new FormData(this);
-        const data = Object.fromEntries(formData.entries());
-        console.log('Profile update:', data);
-        // Here you would typically make an API call to update the profile
-        alert('Profile updated successfully!');
-    });
-
-
-</script>
+{% block extra_css %}
+<style>
+    .card {
+        border-radius: 15px;
+        border: none;
+    }
+    .card-body {
+        padding: 1.5rem;
+    }
+    .rounded-pill {
+        border-radius: 50rem !important;
+    }
+    hr {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+</style>
 {% endblock %}
