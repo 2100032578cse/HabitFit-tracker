@@ -1,4 +1,4 @@
-# Habit_fit_tracker
+# HabitFit Tracker
 
 ## Overview
 
@@ -65,7 +65,7 @@
 ## Technologies Used
 
 - **Django** for backend logic and data management.
-- **Bootstrap & CSS** for responsive and intuitive front-end design.
+- **Bootstrap, HTML & CSS** for responsive and intuitive front-end design.
 - **Chart.js** for rendering visual analytics and progress tracking.
 - **JavaScript** for handling dynamic features like activity tracking.
 
@@ -93,4 +93,4 @@
     - Naphtal USABYUWERA https://github.com/usanaphtal112
 
     ## License
-      -**None**
+      - **None**
