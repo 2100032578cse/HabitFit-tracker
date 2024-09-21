@@ -68,14 +68,13 @@
 - **Bootstrap & CSS** for responsive and intuitive front-end design.
 - **Chart.js** for rendering visual analytics and progress tracking.
 - **JavaScript** for handling dynamic features like activity tracking.
-- **Vercel Blob** for file storage and handling media files.
 
 ## Installation
 
 1. Clone the repository:
    ```bash
    git clone https://github.com/usanaphtal112/HabitFit-tracker.git
-   cd HabitFitTracker
+   cd HabitFit-tracker
 
 2. Install the required dependencies:
     ```bash
@@ -90,7 +89,8 @@
 
     ### Contributing
 
-    - Sandrine UWIZEYIMANA
-    - Naphtal USABYUWERA
+    - UWIZEYIMANA SANDRINE https://github.com/2100032578cse
+    - Naphtal USABYUWERA https://github.com/usanaphtal112
 
     ## License
+      -**None**
