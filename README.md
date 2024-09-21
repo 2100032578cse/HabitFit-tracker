@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Habit_fit_tracker** is a comprehensive habit-tracking application designed to help users set, track, and achieve their personal fitness goals while monitoring daily habits, mental health, and overall well-being. The app offers a user-friendly interface to manage and analyze habits, and it fosters a supportive community for challenges and social sharing.
+**HabitFit Tracker** is a comprehensive habit-tracking application designed to help users set, track, and achieve their personal fitness goals while monitoring daily habits, mental health, and overall well-being. The app offers a user-friendly interface to manage and analyze habits, and it fosters a supportive community for challenges and social sharing.
 
 ## Features
 
