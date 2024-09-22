@@ -2,8 +2,17 @@ from django.views.generic import TemplateView
 from django.views.generic import TemplateView, CreateView, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Activity, Goal, Challenge, Mood
+from .models import Activity, Goal, Challenge, Mood, Achievement
 from .forms import ActivityForm, GoalForm, ChallengeForm, MoodForm
+from django.db.models import Sum
+from .utils import (
+    get_goal_completion,
+    get_activity_breakdown,
+    get_average_daily_activity,
+    get_progress_over_time,
+    calculate_longest_streak,
+    calculate_most_active_day,
+)
 
 
 class DailyActivitiesView(LoginRequiredMixin, TemplateView):
@@ -19,6 +28,26 @@ class DailyActivitiesView(LoginRequiredMixin, TemplateView):
         context["recent_goals"] = Goal.objects.filter(
             user=self.request.user, completed=False
         ).order_by("target_date")[:5]
+
+        # Calculate goal progress
+        goal_progress = {}
+        for goal in context["recent_goals"]:
+            total_duration = (
+                Activity.objects.filter(
+                    user=self.request.user,
+                    date__lte=goal.target_date,  # Optional: Limit by target date
+                    goal=goal,  # Assuming you have a ForeignKey in Activity
+                ).aggregate(total=Sum("duration"))["total"]
+                or 0
+            )
+
+            goal_progress[goal.id] = (
+                (total_duration / goal.target_duration) * 100
+                if goal.target_duration
+                else 0
+            )
+
+        context["goal_progress"] = goal_progress
         return context
 
 
@@ -28,6 +57,22 @@ class ActivityCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("daily_activities")
 
     def form_valid(self, form):
+        # Link the activity to the logged-in user
+        form.instance.user = self.request.user
+        # Link the activity to the specific goal, if provided
+        goal_id = self.request.POST.get("goal")
+        if goal_id:
+            form.instance.goal = Goal.objects.get(id=goal_id, user=self.request.user)
+        return super().form_valid(form)
+
+
+class GoalCreateView(LoginRequiredMixin, CreateView):
+    model = Goal
+    form_class = GoalForm
+    success_url = reverse_lazy("daily_activities")
+
+    def form_valid(self, form):
+        # Link the goal to the logged-in user
         form.instance.user = self.request.user
         return super().form_valid(form)
 
@@ -80,7 +125,37 @@ class ProgressView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Add logic to fetch and process progress data
+
+        # Fetch user's activities
+        activities = Activity.objects.filter(user=self.request.user)
+
+        # Use utility functions to gather data
+        completed_goals, remaining_goals = get_goal_completion(self.request.user)
+        activity_data = get_activity_breakdown(self.request.user)
+        average_daily_activity = get_average_daily_activity(self.request.user)
+        progress_over_time = get_progress_over_time(activities)
+
+        # Key metrics
+        context["average_daily_activity"] = average_daily_activity
+        context["longest_streak"] = calculate_longest_streak(activities)
+        context["total_challenges_completed"] = Goal.objects.filter(
+            user=self.request.user, challenge__isnull=False, status="completed"
+        ).count()
+        context["most_active_day"] = calculate_most_active_day(activities)
+
+        # Add data to the context
+        context["goal_completion"] = {
+            "completed": completed_goals,
+            "remaining": remaining_goals,
+        }
+        context["activity_breakdown"] = activity_data
+        context["progress_over_time"] = progress_over_time
+
+        # Fetch recent achievements
+        context["recent_achievements"] = Achievement.objects.filter(
+            user=self.request.user
+        )[:5]
+
         return context
 
 

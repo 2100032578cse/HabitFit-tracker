@@ -1,50 +1,123 @@
 {% extends 'fittracker/base_dashboard.html' %}
 
 {% block dashboard_content %}
-<h2>Welcome, {{ user.first_name }}!</h2>
+<div class="container mt-5">
+    <h2 class="text-center">Welcome, {{ user.first_name }}!</h2>
 
-<div class="row mt-4">
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                Recent Activities
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Recent Activities</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for activity in recent_activities %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>{{ activity.get_activity_type_display }}</span>
+                        <span class="badge bg-success rounded-pill">{{ activity.duration }} min</span>
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-center">No recent activities</li>
+                    {% endfor %}
+                </ul>
             </div>
-            <ul class="list-group list-group-flush">
-                {% for activity in recent_activities %}
-                <li class="list-group-item">{{ activity.get_activity_type_display }} - {{ activity.duration }} minutes</li>
-                {% empty %}
-                <li class="list-group-item">No recent activities</li>
-                {% endfor %}
-            </ul>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">Current Goals</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for goal in goals %}
+                    <li class="list-group-item">{{ goal.title }}</li>
+                    {% empty %}
+                    <li class="list-group-item text-center">No current goals</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Recent Moods</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for mood in recent_moods %}
+                    <li class="list-group-item">{{ mood.get_mood_display }} - <small>{{ mood.date }}</small></li>
+                    {% empty %}
+                    <li class="list-group-item text-center">No recent mood entries</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                Current Goals
+
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0">Progress Overview</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="progressChart" style="width: 100%; height: 300px;"></canvas>
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-                {% for goal in goals %}
-                <li class="list-group-item">{{ goal.title }}</li>
-                {% empty %}
-                <li class="list-group-item">No current goals</li>
-                {% endfor %}
-            </ul>
         </div>
-    </div>
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                Recent Moods
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Notifications</h5>
+                </div>
+                <div class="card-body">
+                    <p>You have <strong>{{ notifications.count }}</strong> new notifications.</p>
+                    <ul class="list-group">
+                        {% for notification in notifications %}
+                        <li class="list-group-item">{{ notification }}</li>
+                        {% empty %}
+                        <li class="list-group-item text-center">No new notifications</li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-                {% for mood in recent_moods %}
-                <li class="list-group-item">{{ mood.get_mood_display }} - {{ mood.date }}</li>
-                {% empty %}
-                <li class="list-group-item">No recent mood entries</li>
-                {% endfor %}
-            </ul>
         </div>
     </div>
 </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    const progressChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Goals Achieved', 'Goals In Progress', 'Goals Pending'],
+            datasets: [{
+                label: 'Goals Progress',
+                data: [{{ goals_achieved }}, {{ goals_in_progress }}, {{ goals_pending }}],
+                backgroundColor: [
+                    'rgba(75, 192, 192, 0.5)',
+                    'rgba(255, 206, 86, 0.5)',
+                    'rgba(255, 99, 132, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

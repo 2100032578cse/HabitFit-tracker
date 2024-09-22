@@ -12,6 +12,16 @@
                 <div class="card-body">
                     <form method="POST" action="{% url 'login' %}" novalidate>
                         {% csrf_token %}
+
+                        <!-- Display non-field errors -->
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
                         <div class="form-group mb-3">
                             <label for="id_username" class="form-label">Email Address</label>
                             <input type="text" name="username" id="id_username" class="form-control {% if form.username.errors %}is-invalid{% endif %}" required autofocus>

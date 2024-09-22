@@ -3,23 +3,11 @@
 {% block dashboard_content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Progress & Analytics</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                This Month
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">This Week</a></li>
-                <li><a class="dropdown-item" href="#">This Month</a></li>
-                <li><a class="dropdown-item" href="#">This Year</a></li>
-            </ul>
-        </div>
-    </div>
 </div>
 
 <div class="row mb-4">
     <div class="col-md-6">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Goal Completion Rate</h5>
                 <canvas id="goalCompletionChart"></canvas>
@@ -27,7 +15,7 @@
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Activity Breakdown</h5>
                 <canvas id="activityBreakdownChart"></canvas>
@@ -38,7 +26,7 @@
 
 <div class="row mb-4">
     <div class="col-md-12">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Progress Over Time</h5>
                 <canvas id="progressOverTimeChart"></canvas>
@@ -49,58 +37,68 @@
 
 <div class="row">
     <div class="col-md-6">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Key Metrics</h5>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Average Daily Activity
-                        <span class="badge bg-primary rounded-pill">45 mins</span>
+                        <span class="badge bg-primary rounded-pill">{{ average_daily_activity|default:"0" }} mins</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Longest Streak
-                        <span class="badge bg-success rounded-pill">14 days</span>
+                        <span class="badge bg-success rounded-pill">{{ longest_streak }} days</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Total Challenges Completed
-                        <span class="badge bg-info rounded-pill">8</span>
+                        <span class="badge bg-info rounded-pill">{{ total_challenges_completed }}</span>
                     </li>
                     <li class="list-group-item d-flex justify-content-between align-items-center">
                         Most Active Day
-                        <span class="badge bg-warning rounded-pill">Monday</span>
+                        <span class="badge bg-warning rounded-pill">{{ most_active_day }}</span>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
     <div class="col-md-6">
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body">
                 <h5 class="card-title">Recent Achievements</h5>
                 <ul class="list-group list-group-flush">
+                    {% for achievement in recent_achievements %}
                     <li class="list-group-item">
-                        <i class="bi bi-trophy-fill text-warning me-2"></i>
-                        Completed 7-day streak
+                        <i class="bi bi-trophy-fill text-warning me-2"></i> {{ achievement.title }}
                     </li>
-                    <li class="list-group-item">
-                        <i class="bi bi-award-fill text-info me-2"></i>
-                        Reached 1000 total activity minutes
-                    </li>
-                    <li class="list-group-item">
-                        <i class="bi bi-star-fill text-success me-2"></i>
-                        Completed 5 challenges this month
-                    </li>
+                    {% empty %}
+                    <li class="list-group-item">No recent achievements</li>
+                    {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
 {% endblock %}
 
 {% block extra_js %}
 {{ block.super }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+    const goalCompletionData = {
+        completed: {{ goal_completion.completed }},
+        remaining: {{ goal_completion.remaining }}
+    };
+
+    const activityBreakdownData = {
+        exercise: {{ activity_breakdown.exercise }},
+        meditation: {{ activity_breakdown.meditation }},
+        reading: {{ activity_breakdown.reading }},
+        healthy_eating: {{ activity_breakdown.healthy_eating }}
+    };
+
+    const progressOverTimeData = {{ progress_over_time|safe }};
+
     // Goal Completion Rate Chart
     const goalCompletionCtx = document.getElementById('goalCompletionChart').getContext('2d');
     new Chart(goalCompletionCtx, {
@@ -108,8 +106,9 @@
         data: {
             labels: ['Completed', 'Remaining'],
             datasets: [{
-                data: [75, 25],
-                backgroundColor: ['#28a745', '#e9ecef']
+                data: [goalCompletionData.completed, goalCompletionData.remaining],
+                backgroundColor: ['#28a745', '#e9ecef'],
+                borderWidth: 2
             }]
         },
         options: {
@@ -129,8 +128,14 @@
         data: {
             labels: ['Exercise', 'Meditation', 'Reading', 'Healthy Eating'],
             datasets: [{
-                data: [40, 20, 15, 25],
-                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#17a2b8']
+                data: [
+                    activityBreakdownData.exercise,
+                    activityBreakdownData.meditation,
+                    activityBreakdownData.reading,
+                    activityBreakdownData.healthy_eating
+                ],
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#17a2b8'],
+                borderWidth: 2
             }]
         },
         options: {
@@ -148,11 +153,12 @@
     new Chart(progressOverTimeCtx, {
         type: 'line',
         data: {
-            labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+            labels: ['Month 1', 'Month 2', 'Month 3', 'Month 4'],
             datasets: [{
                 label: 'Activity Minutes',
-                data: [120, 190, 230, 300],
+                data: progressOverTimeData,
                 borderColor: '#007bff',
+                backgroundColor: 'rgba(0, 123, 255, 0.2)',
                 tension: 0.1
             }]
         },
@@ -160,7 +166,17 @@
             responsive: true,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Minutes'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Months'
+                    }
                 }
             }
         }
