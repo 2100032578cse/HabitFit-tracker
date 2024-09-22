@@ -14,7 +14,7 @@ class ActivityForm(forms.ModelForm):
 class GoalForm(forms.ModelForm):
     class Meta:
         model = Goal
-        fields = ["title", "description", "target_date"]
+        fields = ["title", "description", "target_duration", "target_date"]
         widgets = {
             "target_date": forms.DateInput(attrs={"type": "date"}),
         }
