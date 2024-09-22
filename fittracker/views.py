@@ -93,7 +93,7 @@ class MoodListView(LoginRequiredMixin, ListView):
     context_object_name = "moods"
 
     def get_queryset(self):
-        return Mood.objects.filter(user=self.request.user).order_by("-date")
+        return Mood.objects.filter(user=self.request.user).order_by("-date")[:5]
 
 
 class MoodCreateView(LoginRequiredMixin, CreateView):

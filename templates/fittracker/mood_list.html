@@ -2,23 +2,25 @@
 
 {% block dashboard_content %}
 <div class="container">
-    <h2 class="mb-4">Mood Tracker</h2>
+    <h2 class="mb-4 text-primary">Mood Tracker</h2>
     <div class="row">
         <div class="col-md-6 mb-4">
-            <div class="card">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0"><i class="fas fa-pencil-alt mr-2"></i>Log Your Mood</h5>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Log Your Mood</h5>
                     <form method="post" action="{% url 'mood-create' %}">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="id_mood">How are you feeling today?</label>
-                            <select class="form-control" id="id_mood" name="mood">
-                                <option value="1">Very Bad</option>
-                                <option value="2">Bad</option>
-                                <option value="3">Neutral</option>
-                                <option value="4">Good</option>
-                                <option value="5">Very Good</option>
-                                <option value="6">Excellent</option>
+                            <select class="form-control custom-select" id="id_mood" name="mood">
+                                <option value="1">😢 Very Bad</option>
+                                <option value="2">😕 Bad</option>
+                                <option value="3">😐 Neutral</option>
+                                <option value="4">🙂 Good</option>
+                                <option value="5">😊 Very Good</option>
+                                <option value="6">🤩 Excellent</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -27,25 +29,44 @@
                         </div>
                         <div class="form-group">
                             <label for="id_notes">Notes (optional)</label>
-                            <textarea class="form-control" id="id_notes" name="notes" rows="3"></textarea>
+                            <textarea class="form-control" id="id_notes" name="notes" rows="3" placeholder="How was your day?"></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Log Mood</button>
+                        <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-save mr-2"></i>Log Mood</button>
                     </form>
                 </div>
             </div>
         </div>
         <div class="col-md-6 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Mood History</h5>
-                    <ul class="list-group">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0"><i class="fas fa-history mr-2"></i>Mood History</h5>
+                </div>
+                <div class="card-body p-0">
+                    <ul class="list-group list-group-flush">
                         {% for mood in moods %}
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ mood.get_mood_display }}
+                            <span>
+                                {% if mood.mood == 1 %}
+                                    <i class="fas fa-frown text-danger mr-2"></i>
+                                {% elif mood.mood == 2 %}
+                                    <i class="fas fa-meh text-warning mr-2"></i>
+                                {% elif mood.mood == 3 %}
+                                    <i class="fas fa-meh-blank text-secondary mr-2"></i>
+                                {% elif mood.mood == 4 %}
+                                    <i class="fas fa-smile text-primary mr-2"></i>
+                                {% elif mood.mood == 5 %}
+                                    <i class="fas fa-grin-beam text-success mr-2"></i>
+                                {% else %}
+                                    <i class="fas fa-grin-stars text-success mr-2"></i>
+                                {% endif %}
+                                {{ mood.get_mood_display }}
+                            </span>
                             <span class="badge badge-primary badge-pill">{{ mood.date|date:"M d, Y" }}</span>
                         </li>
                         {% empty %}
-                        <li class="list-group-item">No mood entries yet.</li>
+                        <li class="list-group-item text-center text-muted">
+                            <i class="fas fa-info-circle mr-2"></i>No mood entries yet.
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -54,3 +75,32 @@
     </div>
 </div>
 {% endblock %}
+
+<style>
+    .card {
+        border: none;
+        transition: transform 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .custom-select {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23343a40' d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' transform='rotate(90 4 4)'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right .75rem center;
+        background-size: 8px 8px;
+    }
+    .list-group-item {
+        border-left: none;
+        border-right: none;
+    }
+    .list-group-item:first-child {
+        border-top: none;
+    }
+    .list-group-item:last-child {
+        border-bottom: none;
+    }
+</style>
