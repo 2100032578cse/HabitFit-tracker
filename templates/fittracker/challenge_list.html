@@ -1,12 +1,10 @@
 {% extends 'fittracker/base_dashboard.html' %}
 
 {% block dashboard_content %}
-<div class="container">
+<div class="container mt-4">
     <h2 class="mb-4">Community Challenges</h2>
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <a href="{% url 'challenge-create' %}" class="btn btn-primary">Create New Challenge</a>
-        </div>
+    <div class="mb-3">
+        <a href="{% url 'challenge-create' %}" class="btn btn-primary">Create New Challenge</a>
     </div>
     <div class="row">
         {% for challenge in challenges %}
@@ -18,13 +16,13 @@
                     <p class="card-text"><small class="text-muted">Start: {{ challenge.start_date }} | End: {{ challenge.end_date }}</small></p>
                 </div>
                 <div class="card-footer">
-                    <a href="#" class="btn btn-primary">Join Challenge</a>
+                    <a href="#" class="btn btn-outline-primary">Join Challenge</a>
                 </div>
             </div>
         </div>
         {% empty %}
         <div class="col-12">
-            <p class="text-center">No active challenges at the moment.</p>
+            <p class="alert alert-info">No active challenges at the moment.</p>
         </div>
         {% endfor %}
     </div>
