@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 CustomUser = settings.AUTH_USER_MODEL
 
@@ -140,3 +141,17 @@ class Achievement(models.Model):
                 description="You have successfully completed 5 challenges this month!",
             )
             achievement.save()
+
+
+class WeeklyReport(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    report_data = models.JSONField()  # Store the report data as JSON
+    report_date = models.DateField(
+        default=timezone.now
+    )  # Date when the report was generated
+
+    class Meta:
+        ordering = ["-report_date"]  # Order by newest reports
+
+    def __str__(self):
+        return f"Weekly Report for {self.user} - {self.report_date}"

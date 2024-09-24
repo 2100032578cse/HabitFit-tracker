@@ -3,98 +3,199 @@
 
 {% block content %}
 <div class="container py-5">
-    <div class="row">
-        <div class="col-lg-4 mb-4">
-            <div class="card shadow">
-                <div class="card-body text-center">
-                    {% if user_profile.user.profile_picture %}
-                    <img src="{{ user_profile.user.profile_picture.url }}" alt="avatar"
-                         class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                    {% else %}
-                    <img src="{% static 'images/user-avatar.png' %}" alt="User Avatar"
-                         class="rounded-circle img-fluid mb-3" style="width: 150px; height: 150px; object-fit: cover;">
-                    {% endif %}
-                    <h5 class="mb-1">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h5>
-                    <p class="text-muted mb-1">{{ user_profile.location }}</p>
-                    <p class="text-muted mb-4">{{ user_profile.bio }}</p>
-                    <div class="d-flex justify-content-center mb-2">
-                        <a href="{% url 'profile_update' %}" class="btn btn-primary rounded-pill px-4">
-                            <i class="fas fa-user-edit mr-2"></i>Edit Profile
-                        </a>
-                    </div>
+    <div class="profile-grid">
+        <div class="card shadow">
+            <div class="card-body text-center">
+                {% if user_profile.user.profile_picture %}
+                <img src="{{ user_profile.user.profile_picture.url }}" alt="avatar"
+                     class="profile-picture">
+                {% else %}
+                <img src="{% static 'images/user-avatar.png' %}" alt="User Avatar"
+                     class="profile-picture">
+                {% endif %}
+                <h5 class="mb-1">{{ user_profile.user.first_name }} {{ user_profile.user.last_name }}</h5>
+                <p class="text-muted mb-1">{{ user_profile.location }}</p>
+                <p class="text-muted mb-4">{{ user_profile.bio }}</p>
+                <div class="d-flex justify-content-center mb-2">
+                    <a href="{% url 'profile_update' %}" class="btn btn-primary rounded-pill px-4">
+                        <i class="fas fa-user-edit mr-2"></i>Edit Profile
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h5 class="card-title mb-4">Profile Information</h5>
-                    <div class="row mb-3">
-                        <div class="col-sm-3">
-                            <p class="mb-0 font-weight-bold">Full Name</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{ user_profile.user.first_name }} {{ user_profile.user.middle_name|default:"" }} {{ user_profile.user.last_name }}</p>
-                        </div>
+
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title mb-4">Profile Information</h5>
+                <div class="info-grid">
+                    <!-- Full Name -->
+                    <p class="info-label">Full Name</p>
+                    <p class="info-value">{{ user_profile.user.first_name }} {{ user_profile.user.middle_name|default:"" }} {{ user_profile.user.last_name }}</p>
+
+                    <!-- Email -->
+                    <p class="info-label">Email</p>
+                    <p class="info-value">{{ user_profile.user.email }}</p>
+
+                    <!-- Date of Birth -->
+                    <p class="info-label">Date of Birth</p>
+                    <p class="info-value">{{ user_profile.user.date_of_birth }}</p>
+
+                    <!-- Weight -->
+                    <p class="info-label">Weight (kg)</p>
+                    <p class="info-value">{{ user_profile.user.weight }} kg</p>
+
+                    <!-- Height -->
+                    <p class="info-label">Height (cm)</p>
+                    <p class="info-value">{{ user_profile.user.height }} cm</p>
+
+                    <!-- BMI -->
+                    <p class="info-label">BMI</p>
+                    <p class="info-value">{{ bmi }}</p>
+
+                    <!-- Fitness Goals -->
+                    <p class="info-label">Fitness Goals</p>
+                    <p class="info-value">{{ user_profile.user.fitness_goals }}</p>
+
+                    <!-- Location -->
+                    <p class="info-label">Location</p>
+                    <p class="info-value">{{ user_profile.location }}</p>
+
+                    <!-- Bio -->
+                    <p class="info-label">Bio</p>
+                    <p class="info-value">{{ user_profile.bio }}</p>
+                </div>
+
+                <!-- Streaks and Points -->
+                <div class="streak-points">
+                    <div>
+                        <h6>Current Streak</h6>
+                        <p>{{ user_profile.current_streak }} days</p>
                     </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3">
-                            <p class="mb-0 font-weight-bold">Email</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{ user_profile.user.email }}</p>
-                        </div>
+                    <div>
+                        <h6>Longest Streak</h6>
+                        <p>{{ user_profile.longest_streak }} days</p>
                     </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3">
-                            <p class="mb-0 font-weight-bold">Date of Birth</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{ user_profile.user.date_of_birth }}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3">
-                            <p class="mb-0 font-weight-bold">Location</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{ user_profile.location }}</p>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row mb-3">
-                        <div class="col-sm-3">
-                            <p class="mb-0 font-weight-bold">Fitness Goals</p>
-                        </div>
-                        <div class="col-sm-9">
-                            <p class="text-muted mb-0">{{ user_profile.user.fitness_goals }}</p>
-                        </div>
+                    <div>
+                        <h6>Total Points</h6>
+                        <p>{{ user_profile.total_points }}</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock %}
 
-{% block extra_css %}
 <style>
+    :root {
+        --primary-color: #4a90e2;
+        --secondary-color: #f5f5f5;
+        --text-color: #333;
+        --text-muted: #6c757d;
+        --border-radius: 10px;
+        --transition: all 0.3s ease;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: var(--text-color);
+        background-color: #f0f2f5;
+    }
+
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 2rem;
+    }
+
     .card {
-        border-radius: 15px;
-        border: none;
+        background-color: #fff;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        transition: var(--transition);
     }
+
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
     .card-body {
-        padding: 1.5rem;
+        padding: 2rem;
     }
-    .rounded-pill {
-        border-radius: 50rem !important;
+
+    .profile-picture {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 auto 1rem;
+        border: 3px solid var(--primary-color);
+        transition: var(--transition);
     }
-    hr {
-        margin-top: 0.5rem;
+
+    .profile-picture:hover {
+        transform: scale(1.05);
+    }
+
+    h5 {
+        color: var(--primary-color);
         margin-bottom: 0.5rem;
+    }
+
+    .text-muted {
+        color: var(--text-muted);
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+        transition: var(--transition);
+    }
+
+    .btn-primary:hover {
+        background-color: #3a7bc8;
+        border-color: #3a7bc8;
+        transform: translateY(-2px);
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .info-label {
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+
+    .info-value {
+        color: var(--text-muted);
+        margin-bottom: 0;
+    }
+
+    .streak-points {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+    }
+
+    .streak-points div {
+        background-color: var(--secondary-color);
+        padding: 1rem;
+        border-radius: var(--border-radius);
+    }
+
+    @media (max-width: 768px) {
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
 {% endblock %}

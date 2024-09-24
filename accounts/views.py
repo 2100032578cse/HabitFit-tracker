@@ -23,8 +23,14 @@ class ProfilePageDetailView(LoginRequiredMixin, DetailView):
         profile, created = UserProfile.objects.get_or_create(user=self.request.user)
         return profile
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["user"] = self.request.user
+        context["bmi"] = self.request.user.bmi
+        return context
 
-class ProfileUpdateView(UpdateView):
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     form_class = CustomUserChangeForm
     template_name = "registration/profile_update.html"

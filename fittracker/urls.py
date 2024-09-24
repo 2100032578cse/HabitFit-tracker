@@ -9,6 +9,7 @@ from .views import (
     GoalCreateView,
     ProgressView,
     LeaderboardView,
+    WeeklyReportView,
 )
 
 urlpatterns = [
@@ -22,4 +23,5 @@ urlpatterns = [
     path("challenges/create/", ChallengeCreateView.as_view(), name="challenge-create"),
     path("progress/", ProgressView.as_view(), name="progress"),
     path("leaderboard/", LeaderboardView.as_view(), name="leaderboard"),
+    path("weekly-report/", WeeklyReportView.as_view(), name="weekly_report"),
 ]
