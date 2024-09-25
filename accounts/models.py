@@ -29,6 +29,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    @property
+    def bmi(self):
+        if self.height and self.weight:
+            height_in_meters = self.height / 100  # Convert cm to meters
+            return round(self.weight / (height_in_meters**2), 2)
+        return None
+
 
 class UserProfile(models.Model):
     user = models.OneToOneField(

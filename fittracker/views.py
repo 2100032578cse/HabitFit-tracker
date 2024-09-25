@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from django.views.generic import TemplateView, CreateView, ListView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Activity, Goal, Challenge, Mood, Achievement
+from .models import Activity, Goal, Challenge, Mood, Achievement, WeeklyReport
 from .forms import ActivityForm, GoalForm, ChallengeForm, MoodForm
 from django.db.models import Sum
 from .utils import (
@@ -165,4 +165,22 @@ class LeaderboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Add logic to fetch and process leaderboard data
+        return context
+
+
+class WeeklyReportView(LoginRequiredMixin, TemplateView):
+    template_name = "report/weekly_report.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        # Get the latest report for the logged-in user
+        latest_report = WeeklyReport.objects.filter(user=user).first()
+
+        if latest_report:
+            context["report"] = latest_report.report_data
+            context["report_date"] = latest_report.report_date
+        else:
+            context["no_report"] = True
         return context

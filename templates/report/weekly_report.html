@@ -1,0 +1,183 @@
+{% extends "Components/base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    {% if no_report %}
+    <div class="alert alert-warning text-center">
+        <h1 class="alert-heading">No Report Available</h1>
+        <p>You don't have any weekly reports yet. Come back next week!</p>
+    </div>
+    {% else %}
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-primary text-white text-center">
+            <h1 class="card-title mb-0">Weekly Report</h1>
+            <small class="text-white-50">Generated on {{ report_date }}</small>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="mb-3"><i class="bi bi-activity me-2"></i>Activities</h2>
+                    <ul class="list-group list-group-flush">
+                        {% for activity in report.activity_summary %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ activity.activity_type }}
+                            <span class="badge bg-primary rounded-pill">{{ activity.total_duration }} mins, {{ activity.activity_count }} sessions</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No activities logged this week.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <h2 class="mb-3"><i class="bi bi-target me-2"></i>Goals</h2>
+                    <ul class="list-group list-group-flush">
+                        {% for goal in report.goals_summary %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ goal.status }}
+                            <span class="badge bg-success rounded-pill">{{ goal.goal_count }} goals</span>
+                        </li>
+                        {% empty %}
+                        <li class="list-group-item text-muted">No goals updated this week.</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="mt-3">Completed Goals: <strong>{{ report.completed_goals }}</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-info text-white text-center">
+            <h2 class="card-title mb-0"><i class="bi bi-emoji-smile me-2"></i>Mood Summary</h2>
+        </div>
+        <div class="card-body text-center">
+            <p class="lead">Average Mood: <strong>{{ report.average_mood }}</strong></p>
+            <h3 class="card-title mt-4">Mood Number Line</h3>
+
+            <!-- Mood Number Line -->
+            <div class="mood-numberline">
+                <div class="numberline">
+                    <div class="mood-marker" style="left: calc(({{ report.average_mood }} - 1) * 16.66%);">
+                        <span class="mood-value">{{ report.average_mood }}</span>
+                    </div>
+                </div>
+                <div class="mood-labels">
+                    <div class="label" style="left: 0%;">1 - Very Bad</div>
+                    <div class="label" style="left: 16.66%;">2 - Bad</div>
+                    <div class="label" style="left: 33.33%;">3 - Neutral</div>
+                    <div class="label" style="left: 50%;">4 - Good</div>
+                    <div class="label" style="left: 66.66%;">5 - Very Good</div>
+                    <div class="label" style="left: 83.33%;">6 - Excited</div>
+                </div>
+            </div>
+
+            <h4 class="mt-4">Mood Trend Details</h4>
+            <ul class="list-group list-group-flush">
+                {% for mood in report.mood_trend %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Mood: {{ mood.mood }}
+                    <span class="badge bg-secondary rounded-pill">{{ mood.mood_count }} times</span>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">No mood data logged this week.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-warning text-white text-center">
+            <h2 class="card-title mb-0"><i class="bi bi-trophy me-2"></i>Achievements</h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-group list-group-flush">
+                {% for achievement in report.achievements %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ achievement.title }}
+                    <span class="text-muted small">{{ achievement.date_achieved }}</span>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">No new achievements this week.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    /* Add custom styles to improve visual aesthetics */
+    .card {
+        border-radius: 1rem;
+    }
+
+    .card-header {
+        border-top-left-radius: 1rem;
+        border-top-right-radius: 1rem;
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    h1.card-title, h2.card-title {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        color: #343a40; /* Darker color for headings */
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        color: #495057; /* Slightly muted text */
+    }
+
+    .badge {
+        font-size: 0.875rem; /* Slightly smaller font for badges */
+    }
+
+    /* Mood Number Line Styles */
+    .mood-numberline {
+        position: relative;
+        height: 50px;
+        margin: 20px 0;
+    }
+
+    .numberline {
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        background-color: #ccc;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .mood-marker {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        background-color: #007bff;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 30px;
+        color: white;
+        font-weight: bold;
+        transform: translate(-50%, -100%);
+    }
+
+    .mood-labels {
+        position: absolute;
+        width: 100%;
+        top: 60px;
+    }
+
+    .label {
+        position: absolute;
+        width: 16.66%; /* 100% / 6 moods */
+        text-align: center;
+        font-size: 0.9em;
+    }
+</style>
+{% endblock %}

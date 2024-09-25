@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Activity, Goal, Mood, Challenge, Achievement
+from .models import Activity, Goal, Mood, Challenge, Achievement, WeeklyReport
 
 
 @admin.register(Activity)
@@ -34,3 +34,11 @@ class ChallengeAdmin(admin.ModelAdmin):
 class AchievementAdmin(admin.ModelAdmin):
     list_display = ["title", "user"]
     search_fields = ["title"]
+
+
+@admin.register(WeeklyReport)
+class WeeklyReportAdmin(admin.ModelAdmin):
+    list_display = ("user", "report_date")
+    readonly_fields = ("report_data", "report_date")
+    search_fields = ("user__username", "report_date")
+    list_filter = ("report_date",)
