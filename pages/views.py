@@ -30,3 +30,6 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
 class ProfileView(TemplateView):
     template_name = "pages/profile.html"
+
+class AboutView(TemplateView):
+    template_name = "pages/about.html"
