@@ -90,7 +90,7 @@
     ### Contributing
 
     - UWIZEYIMANA SANDRINE https://github.com/2100032578cse
-    - Naphtal USABYUWERA https://github.com/usanaphtal112
+   
 
     ## License
       - **None**
